@@ -1,4 +1,4 @@
-name: winddatas
+name: wind_data
 channels:
   - conda-forge
 dependencies:
