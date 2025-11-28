@@ -143,7 +143,7 @@ Wind-Data-v1/
 ├── README.md
 ├── environment.yml
 ├── requirements.txt
-├── run_winddata.bat
+├── wind_data.bat
 ├── script.py
 ├── modele_sites.csv
 │
@@ -220,7 +220,7 @@ Create environment:
 
 ```
 conda env create -f environment.yml
-conda activate winddata
+conda activate wind_data
 ```
 
 ---
@@ -230,13 +230,13 @@ conda activate winddata
 Windows launcher:
 
 ```
-run_winddata.bat
+wind_data.bat
 ```
 
 Direct execution:
 
 ```
-conda activate winddata
+conda activate wind_data
 python script.py
 ```
 

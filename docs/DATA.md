@@ -84,7 +84,7 @@ Wind speeds depend heavily on the averaging duration. One cannot directly compar
 - Data collected from sources such as NOAA ISD, DWD (Germany), Environment Canada, etc.
 - Aggregation and harmonization managed by the Meteostat team.
 
-Raw Meteostat data is retrieved in km/h (API native unit), and then converted to m/s (1 m/s = 3.6 km/h) upon import into WindDatas to ensure consistency with other sources.
+Raw Meteostat data is retrieved in km/h (API native unit), and then converted to m/s (1 m/s = 3.6 km/h) upon import into Wind Data to ensure consistency with other sources.
 
 #### Measurement Height
 - **Typically: 10 meters above ground**, in line with WMO recommendations.

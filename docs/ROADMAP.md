@@ -10,7 +10,7 @@
 
 ---
 
-This document describes the strategic development plan for WindDatas.
+This document describes the strategic development plan for Wind Data.
 It is structured into four layers:
 - v1.x maintenance
 - v1.x feature improvements
@@ -94,12 +94,12 @@ Improved statistical modelling, interactive dashboards, cloud deployment.
 -------------------------------------------------------------------------------
 
 ### 4.1 Packaging and Modularity
-- Convert Wind Data into a proper Python package (`pip install winddatas`)
+- Convert Wind Data into a proper Python package (`pip install wind_data`)
 - Split pipeline into subpackages:
-  * winddatas.sources
-  * winddatas.stats
-  * winddatas.normalization
-  * winddatas.reporting
+  * wind_data.sources
+  * wind_data.stats
+  * wind_data.normalization
+  * wind_data.reporting
 - Plugin-based architecture for new data sources
 - Deprecation of monolithic script.py
 

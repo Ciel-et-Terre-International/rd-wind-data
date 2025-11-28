@@ -11,7 +11,7 @@
 ---
 
 
-Thank you for contributing to the WindDatas project.
+Thank you for contributing to the Wind Data project.
 This document describes how to contribute safely and efficiently within the
 Ciel & Terre International development workflow.
 
