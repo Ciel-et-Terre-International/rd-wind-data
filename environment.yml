@@ -1,0 +1,19 @@
+name: winddatas
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - pandas
+  - numpy
+  - requests
+  - matplotlib
+  - scipy
+  - plotly
+  - python-docx
+  - geopy
+  - cdsapi
+  - pydeck
+  - papermill
+  - pip
+  - pip:
+      - meteostat
