@@ -211,7 +211,7 @@ See full technical specification in - [DATA.md](./docs/DATA.md).
 
 
 The project is located on the SharePoint  
-[Lien](https://cielterre.sharepoint.com/:f:/s/RD-Ressources/EsJXg3QcLeVBi4HyLlOAcQcBdlN-OUI6me08iRINvX17Dg?e=HzSON8)
+[Lien](https://cielterre.sharepoint.com/:f:/s/RD-Ressources/EsJXg3QcLeVBi4HyLlOAcQcBdlN-OUI6me08iRINvX17Dg?e=HzSON8)  
 There is also a GitHub, to see all documentation about and have better interface.  
 [GitHub Wind Data](https://github.com/Ciel-et-Terre-International/Wind-Data-v1)
 
@@ -233,7 +233,9 @@ Then, you can open directly the project from the SharePoint (Syncing)
 It has to be located at : C:\Users\%USER%  
 Example : C:\Users\AdrienSALICIS  
 
-[Optional]  
+
+
+**[Optional]**
 You can clone the repository (or download it from SharePoint) to your local, for example, on your desktop. Performance can be optimised when the files are not located on the network.  
 
 ```
@@ -241,7 +243,9 @@ git clone https://github.com/Ciel-et-Terre-International/Wind-Data-v1.git
 cd Wind-Data-v1  
 ```
 
+
 **Before running the tool, you must install dependencies and packages.**  
+ 
 This has to be done with Conda (Anaconda or Miniconda, doesn't matter).  
 A virtual environnement has to be created, and the environment.yml files described its characteristics.  
 Command to create the environment:  
@@ -269,7 +273,9 @@ conda activate wind_data
 wind_data.bat  
 ```
 3.  
+```
 Fill the dates for your study  
+```
 
 Direct execution (not recommended) :  
 
