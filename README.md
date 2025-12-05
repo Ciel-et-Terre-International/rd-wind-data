@@ -198,7 +198,7 @@ Wind Data integrates multiple meteorological datasets:
 | Source        | Type       | Resolution | Strengths | Limitations |
 |---------------|------------|------------|-----------|-------------|
 | NOAA ISD      | Observed   | Hourly     | High credibility | Metadata inconsistencies |
-| Meteostat     | Observed   | Hourly     | Cleaned NOAA | May inherit gaps |
+| Meteostat     | Observed   | Hourly     | Stations data | May inherit gaps |
 | ERA5          | Model      | Hourly     | No gaps, global | Underestimates extremes |
 | NASA POWER    | Model      | Daily      | Smooth climatology | Not suitable for gust extremes |
 | Open-Meteo    | Model      | Hourly     | Easy API | Model-dependent gusts |
@@ -252,7 +252,6 @@ Command to create the environment:
 
 ```
 conda env create -f environment.yml  
-conda activate wind_data  
 ```
 
 [Optional]  
