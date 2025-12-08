@@ -18,7 +18,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.stats import gumbel_r
-from windrose import WindroseAxes  # encore utilisé dans certaines versions du projet
 
 # Style global sobre
 plt.rcParams["figure.dpi"] = 120
@@ -28,6 +27,20 @@ plt.rcParams["axes.spines.top"] = False
 plt.rcParams["axes.spines.right"] = False
 sns.set_style("whitegrid")
 
+def _get_config_float(site_config, key, default):
+    """
+    Récupère une valeur float dans site_config en gérant les NaN / chaînes vides.
+    Si la valeur est absente ou non numérique, retourne default.
+    """
+    val = site_config.get(key, default)
+    try:
+        f = float(val)
+        # gestion des NaN float
+        if np.isnan(f):
+            return default
+        return f
+    except Exception:
+        return default
 
 # ============================================================
 # 0. Fonction générique : niveaux de retour (Gumbel)
@@ -227,8 +240,9 @@ def run_analysis_for_site(
     # ------------------------------------------------------------
     # 1. Seuils Building Code (fournis par modele_sites.csv)
     # ------------------------------------------------------------
-    bc_mean_threshold = float(site_config.get("building_code_windspeed_mean_50y", 25.0))
-    bc_gust_threshold = float(site_config.get("building_code_windspeed_gust_50y", 25.0))
+    bc_mean_threshold = _get_config_float(site_config, "building_code_windspeed_mean_50y", 25.0)
+    bc_gust_threshold = _get_config_float(site_config, "building_code_windspeed_gust_50y", 25.0)
+
 
     print(f"Seuil Building Code (vent moyen) : {bc_mean_threshold:.2f} m/s")
     print(f"Seuil Building Code (rafale)     : {bc_gust_threshold:.2f} m/s")
@@ -258,14 +272,21 @@ def run_analysis_for_site(
     # ------------------------------------------------------------
     if dataframes:
         print("Chargement des données depuis les DataFrames fournis...")
-        # Harmonisation minimale colonne temps + noms
         normalized = {}
         for name, df in dataframes.items():
+            # On ignore toutes les entrées vides ou non-DataFrame
+            if df is None:
+                continue
+            if not isinstance(df, pd.DataFrame):
+                continue
+            if df.empty:
+                continue
             normalized[name] = _normalize_dataframe_columns(df)
         dataframes = normalized
     else:
         print("Chargement des données depuis les CSV journaliers...")
         dataframes = _load_dataframes_from_csv(site_folder)
+
 
     if not dataframes:
         print("Aucune donnée trouvée pour ce site. Analyse interrompue.")
@@ -280,6 +301,31 @@ def run_analysis_for_site(
     if not dataframes:
         print("Tous les DataFrames sont vides. Analyse interrompue.")
         return
+
+    # ------------------------------------------------------------
+    # 2.b. Forcer ERA5 à utiliser la série journalière agrégée
+    # ------------------------------------------------------------
+    # Si une source 'era5' est présente et que le fichier
+    # era5_daily_<site>.csv existe, on remplace le DataFrame
+    # par la version journalière (maxima journaliers).
+    if "era5" in dataframes:
+        daily_path = os.path.join(site_folder, f"era5_daily_{site_name}.csv")
+        if os.path.exists(daily_path):
+            try:
+                df_daily = pd.read_csv(daily_path)
+                dataframes["era5"] = _normalize_dataframe_columns(df_daily)
+                print("  [ERA5] Utilisation des données journalières (era5_daily_*.csv) pour l'analyse.")
+            except Exception as e:
+                print(
+                    "  [ERA5] Erreur lecture fichier journalier, "
+                    f"utilisation de la série fournie : {e}"
+                )
+
+    # On retire explicitement les sources vides
+    dataframes = {
+        name: df for name, df in dataframes.items()
+        if isinstance(df, pd.DataFrame) and not df.empty
+    }
 
     # ------------------------------------------------------------
     # 3. Statistiques descriptives (vent moyen)

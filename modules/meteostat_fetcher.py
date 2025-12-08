@@ -52,6 +52,7 @@ def _fetch_meteostat_daily_for_station(
     end_date,
     mean_correction_factor=None,
     gust_correction_factor=None,
+    station_meta=None,
 ):
     """
     Récupère les données horaires Meteostat pour UNE station, agrège par jour
@@ -87,24 +88,6 @@ def _fetch_meteostat_daily_for_station(
     # Parse dates (YYYY-MM-DD)
     start = datetime.strptime(start_date, "%Y-%m-%d")
     end = datetime.strptime(end_date, "%Y-%m-%d")
-
-    # Métadonnées de la station
-    stations_df = Stations().id(station_id).fetch(1)
-    if stations_df.empty:
-        raise ValueError(f"Aucune métadonnée disponible pour la station Meteostat {station_id}")
-    station_row = stations_df.iloc[0]
-
-    station_lat = float(station_row["latitude"])
-    station_lon = float(station_row["longitude"])
-    dist_km = geodesic((lat, lon), (station_lat, station_lon)).km
-
-    station_name = station_row.get("name", "")
-    station_elev = (
-        float(station_row["elevation"])
-        if not pd.isna(station_row.get("elevation"))
-        else np.nan
-    )
-    station_tz = station_row.get("timezone", "UTC")
 
     # Données horaires (timezone=UTC pour alignement avec les autres sources)
     data = Hourly(station_id, start, end, timezone="UTC")
@@ -192,14 +175,15 @@ def _fetch_meteostat_daily_for_station(
         daily_df["gust_correction_factor"] = 1.0
 
     # Métadonnées
+    meta = station_meta or {}
     daily_df["source"] = "meteostat"
     daily_df["station_id"] = station_id
-    daily_df["station_name"] = station_name
-    daily_df["station_latitude"] = station_lat
-    daily_df["station_longitude"] = station_lon
-    daily_df["station_distance_km"] = round(dist_km, 2)
-    daily_df["station_elevation"] = station_elev
-    daily_df["timezone"] = station_tz
+    daily_df["station_name"] = meta.get("name", "")
+    daily_df["station_latitude"] = meta.get("latitude", np.nan)
+    daily_df["station_longitude"] = meta.get("longitude", np.nan)
+    daily_df["station_distance_km"] = meta.get("distance_km", np.nan)
+    daily_df["station_elevation"] = meta.get("elevation", np.nan)
+    daily_df["timezone"] = meta.get("timezone", "UTC")
 
     return daily_df
 
@@ -236,29 +220,39 @@ def fetch_meteostat_data(
     os.makedirs(site_folder, exist_ok=True)
 
     # Stations à utiliser
+    meta_info = {}
     if station_ids is None:
-        stations_df = Stations().nearby(lat, lon).fetch(2)
-        if stations_df.empty:
-            raise ValueError("Aucune station Meteostat trouvée à proximité du site.")
-        station_ids = stations_df.index.tolist()
+        meta_info = get_nearest_stations_info(lat, lon, limit=2)
+        station_ids = [meta_info[k]["id"] for k in sorted(meta_info.keys())]
+    else:
+        # si station_ids est donné, on essaie tout de même de récupérer des infos de base
+        # via nearby, mais ce n'est pas critique
+        meta_info = {}
 
     data_collected = {}
 
     for i, station_id in enumerate(station_ids, 1):
         print(f"Téléchargement Meteostat pour station : {station_id}")
+        station_key = f"station{i}"
+        station_meta = meta_info.get(station_key, {})
 
-        df_station = _fetch_meteostat_daily_for_station(
-            station_id=station_id,
-            lat=lat,
-            lon=lon,
-            start_date=start_date,
-            end_date=end_date,
-            mean_correction_factor=mean_correction_factor,
-            gust_correction_factor=gust_correction_factor,
-        )
+        try:
+            df_station = _fetch_meteostat_daily_for_station(
+                station_id=station_id,
+                lat=lat,
+                lon=lon,
+                start_date=start_date,
+                end_date=end_date,
+                mean_correction_factor=mean_correction_factor,
+                gust_correction_factor=gust_correction_factor,
+                station_meta=station_meta,
+            )
+        except Exception as e:
+            print(f"Erreur Meteostat {i} : {e}")
+            continue
 
         if df_station.empty:
-            print(f"Pas de données pour Meteostat station {station_id}")
+            print(f"Pas de données Meteostat pour la station {station_id}")
             continue
 
         filename = f"meteostat{i}_{site_name}.csv"
