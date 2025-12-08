@@ -238,7 +238,7 @@ See full technical specification in [DATA.md](./docs/DATA.md).
 
 This project is hosted internally (SharePoint) and on GitHub.
 
-Internal SharePoint starting point:  
+Internal SharePoint starting point (to be synced):  
 [Lien](https://cielterre.sharepoint.com/:f:/s/RD-Ressources/EsJXg3QcLeVBi4HyLlOAcQcBdlN-OUI6me08iRINvX17Dg?e=HzSON8)  
 
 GitHub repository:  
@@ -346,3 +346,4 @@ visualisation_plotly.html   # interactive global map of sites and stations
 
 Project lead: Adrien Salicis  
 Email: adrien.salicis@cieletterre.net
+
