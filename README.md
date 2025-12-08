@@ -237,7 +237,8 @@ See full technical specification in [DATA.md](./docs/DATA.md).
 # Installation
 
 This project is hosted internally (SharePoint) and on GitHub.  
-Recommended : Synchronize the folder on your computer, install yhe following softwares and dependencies and open the synced folder with VS CODE.  
+Recommended : Synchronize the folder on your computer, install the following softwares and dependencies.  
+Open the synced folder with Visual Studio Code.  
 Then you will be in a good environment to run the tool or work on it.  
 
 Internal SharePoint starting point (to be synced):  
@@ -348,6 +349,7 @@ visualisation_plotly.html   # interactive global map of sites and stations
 
 Project lead: Adrien Salicis  
 Email: adrien.salicis@cieletterre.net
+
 
 
 
