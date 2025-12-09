@@ -285,6 +285,14 @@ conda activate wind_data
 
 # Usage
 
+
+Instructions for use  
+
+![openfolder](./docs/images/openfolder.png)
+![pathfolder](./docs/images/pathfolder.png)
+![newterminal](./docs/images/newterminal.png)
+![terminal](./docs/images/terminal.png)
+
 From VS Code (Command Prompt terminal) or a regular CMD:
 
 ```bash
@@ -342,6 +350,9 @@ visualisation_plotly.html   # interactive global map of sites and stations
 - If the environment variable `MAPBOX_TOKEN` is set, the map uses a **satellite** basemap (Mapbox).  
 `MAPBOX_TOKEN : pk.eyJ1IjoiYXNhbGljaXMiLCJhIjoiY21pd3lyZW95MDE1NzNmcXV3MW9xZTVyMCJ9.ycIrvPH-dCKyWBztK653Fg`
 - Otherwise, a built-in **Natural Earth** basemap is used (no external token required).
+
+
+![map_example](./docs/images/map_example.png)
 
 ---
 
