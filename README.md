@@ -245,8 +245,6 @@ You will then have a suitable environment for running the tool or working on it.
 Internal SharePoint starting point (can be synced, or opened from the R&D-Ressources synced folder):  
 [Wind Historical Tool](https://cielterre.sharepoint.com/:f:/s/RD-Ressources/EsJXg3QcLeVBi4HyLlOAcQcBdlN-OUI6me08iRINvX17Dg?e=HzSON8)  
 
-GitHub repository:  
-<https://github.com/Ciel-et-Terre-International/rd-wind-data>
 
 ### Requirements
 
@@ -368,6 +366,7 @@ visualisation_plotly.html   # interactive global map of sites and stations
 
 Project lead: Adrien Salicis  
 Email: adrien.salicis@cieletterre.net
+
 
 
 
